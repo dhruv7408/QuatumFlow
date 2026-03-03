@@ -1,523 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumFlow: Quantum Computing Simulation Toolkit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+    <!-- Menu Bar -->
+    <nav class="menu-bar">
+        <div class="menu-container">
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+                <span>QuantumFlow</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-content="quantum-computing">
+                        <i class="fas fa-laptop-code"></i>
+                        <span>Quantum Computing</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <span>Quantum Gates</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown">
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('h-gate')">
+                                <i class="fas fa-project-diagram"></i>
+                                <span>H Gate (Hadamard)</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('x-gate')">
+                                <i class="fas fa-times-circle"></i>
+                                <span>X Gate (Pauli-X)</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('cnot-gate')">
+                                <i class="fas fa-link"></i>
+                                <span>CNOT Gate</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('all-gates')">
+                                <i class="fas fa-th"></i>
+                                <span>All Gates</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Concepts</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown">
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('superposition')">
+                                <i class="fas fa-circle-notch"></i>
+                                <span>Superposition</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('entanglement')">
+                                <i class="fas fa-link"></i>
+                                <span>Entanglement</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('interference')">
+                                <i class="fas fa-wave-square"></i>
+                                <span>Interference</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href="#" class="dropdown-link" onclick="showContent('decoherence')">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>Decoherence</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showContent('applications')">
+                        <i class="fas fa-rocket"></i>
+                        <span>Applications</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showContent('resources')">
+                        <i class="fas fa-book"></i>
+                        <span>Resources</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-atom"></i> QuantumFlow: Quantum Computing Simulation Toolkit</h1>
+            <p class="subtitle">Drag and drop quantum gates to build circuits, visualize results, and generate executable code for real quantum computers</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="panel">
+                <h2><i class="fas fa-puzzle-piece"></i> Quantum Gates</h2>
+                <div class="gates">
+                    <div class="gate" draggable="true" data-gate="H" data-description="Hadamard: Creates superposition">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>H Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="X" data-description="Pauli-X: Bit flip">
+                        <i class="fas fa-times-circle"></i>
+                        <span>X Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="Y" data-description="Pauli-Y: Y rotation">
+                        <i class="fas fa-yin-yang"></i>
+                        <span>Y Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="Z" data-description="Pauli-Z: Phase flip">
+                        <i class="fas fa-bolt"></i>
+                        <span>Z Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="CX" data-description="CNOT: Controlled NOT">
+                        <i class="fas fa-link"></i>
+                        <span>CNOT Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="SWAP" data-description="SWAP: Exchange states">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>SWAP Gate</span>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="RX" data-description="RX: X-axis rotation">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>RX Gate</span>
+                        <div class="gate-param">θ: <input type="number" value="1.57" min="0" max="6.28" step="0.01"></div>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="RY" data-description="RY: Y-axis rotation">
+                        <i class="fas fa-redo-alt"></i>
+                        <span>RY Gate</span>
+                        <div class="gate-param">θ: <input type="number" value="1.57" min="0" max="6.28" step="0.01"></div>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="RZ" data-description="RZ: Z-axis rotation">
+                        <i class="fas fa-circle-notch"></i>
+                        <span>RZ Gate</span>
+                        <div class="gate-param">θ: <input type="number" value="1.57" min="0" max="6.28" step="0.01"></div>
+                    </div>
+                    <div class="gate" draggable="true" data-gate="Measure" data-description="Measure: Collapse state">
+                        <i class="fas fa-ruler"></i>
+                        <span>Measure</span>
+                    </div>
+                </div>
+                
+                <!-- Interference Controls -->
+                <div class="interference-controls">
+                    <h3><i class="fas fa-wave-square"></i> Interference Control</h3>
+                    <div class="slider-container">
+                        <label for="interference-level">Interference Level:</label>
+                        <input type="range" id="interference-level" class="interference-slider" min="0" max="100" value="50">
+                        <span class="slider-value" id="interference-value">50%</span>
+                    </div>
+                    <div class="slider-container">
+                        <label for="phase-shift">Phase Shift:</label>
+                        <input type="range" id="phase-shift" class="interference-slider" min="0" max="360" value="0">
+                        <span class="slider-value" id="phase-value">0°</span>
+                    </div>
+                    <button id="apply-interference" class="bloch-btn"><i class="fas fa-sliders-h"></i> Apply Interference</button>
+                </div>
+                
+                <div class="quantum-state" id="quantum-state-display">
+                    |ψ⟩ = 1.00|000⟩
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Qubits</h3>
+                        <div class="stat-value" id="qubit-count">3</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Gates Used</h3>
+                        <div class="stat-value" id="gate-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Depth</h3>
+                        <div class="stat-value" id="circuit-depth">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Fidelity</h3>
+                        <div class="stat-value" id="fidelity">100%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2><i class="fas fa-project-diagram"></i> Quantum Circuit</h2>
+                <div class="circuit" id="circuit">
+                    <div class="qubit" data-qubit="0">
+                        <div class="qubit-label">0</div>
+                    </div>
+                    <div class="qubit" data-qubit="1">
+                        <div class="qubit-label">1</div>
+                    </div>
+                    <div class="qubit" data-qubit="2">
+                        <div class="qubit-label">2</div>
+                    </div>
+                </div>
+                
+                <div class="circuit-step">
+                    <span>Step-by-step execution</span>
+                    <div class="step-controls">
+                        <button id="prev-step"><i class="fas fa-backward"></i></button>
+                        <button id="next-step"><i class="fas fa-forward"></i></button>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="run-btn"><i class="fas fa-play"></i> Run Simulation</button>
+                    <button id="clear-btn" class="clear-btn"><i class="fas fa-trash"></i> Clear Circuit</button>
+                    <button id="add-qubit"><i class="fas fa-plus"></i> Add Qubit</button>
+                    <button id="remove-qubit"><i class="fas fa-minus"></i> Remove Qubit</button>
+                    <button id="export-btn"><i class="fas fa-download"></i> Export Code</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2><i class="fas fa-code"></i> Generated Code</h2>
+                <div class="code-container" id="code-output">
+# Quantum code will appear here
+from qiskit import QuantumCircuit, Aer, execute
 import numpy as np
-import scipy.sparse as sp
-from typing import List, Dict, Any, Optional, Union
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Optional
-import uvicorn
-import logging
-from logging.config import dictConfig
-import json
 
-# Configure logging
-dictConfig({
-    "version": 1,
-    "formatters": {
-        "default": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        }
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
-        }
-    },
-    "root": {
-        "level": "INFO",
-        "handlers": ["console"]
-    }
-})
+# Create a quantum circuit with 3 qubits
+qc = QuantumCircuit(3)
 
-logger = logging.getLogger(__name__)
+# Add gates
+qc.h(0)
+qc.cx(0, 1)
+qc.rx(np.pi/2, 2)
+qc.measure_all()
 
-# Define data models
-class GateOperation(BaseModel):
-    gate: str
-    targets: List[int] = Field(..., min_items=1)
-    controls: Optional[List[int]] = None
-    parameters: Optional[List[float]] = None
-
-class CircuitRequest(BaseModel):
-    operations: List[GateOperation]
-    num_qubits: int = Field(..., gt=0, le=25)  # Practical limit for simulation
-    shots: Optional[int] = Field(default=1, gt=0)  # Number of measurements
-
-class CircuitResponse(BaseModel):
-    state_vector: Optional[List[List[float]]]  # [real, imag] pairs
-    measurements: Optional[List[int]]
-    probabilities: Optional[List[float]]
-
-class QuantumSimulator:
-    """
-    A high-performance quantum simulator using state vector representation.
-    """
-    
-    # Define common single-qubit gates
-    SINGLE_QUBIT_GATES = {
-        'i': np.array([[1, 0], [0, 1]], dtype=np.complex128),
-        'x': np.array([[0, 1], [1, 0]], dtype=np.complex128),
-        'y': np.array([[0, -1j], [1j, 0]], dtype=np.complex128),
-        'z': np.array([[1, 0], [0, -1]], dtype=np.complex128),
-        'h': (1/np.sqrt(2)) * np.array([[1, 1], [1, -1]], dtype=np.complex128),
-        's': np.array([[1, 0], [0, 1j]], dtype=np.complex128),
-        't': np.array([[1, 0], [0, np.exp(1j*np.pi/4)]], dtype=np.complex128),
-    }
-    
-    def __init__(self, num_qubits: int):
-        """
-        Initialize the simulator with the specified number of qubits.
-        
-        Args:
-            num_qubits: Number of qubits in the system
-        """
-        self.num_qubits = num_qubits
-        self.state = np.zeros(2**num_qubits, dtype=np.complex128)
-        self.state[0] = 1.0 + 0j  # Initialize to |0...0⟩
-        logger.info(f"Initialized simulator with {num_qubits} qubits")
-    
-    def reset(self):
-        """Reset the simulator to the |0...0⟩ state."""
-        self.state = np.zeros(2**self.num_qubits, dtype=np.complex128)
-        self.state[0] = 1.0 + 0j
-        logger.debug("Reset simulator to |0...0⟩ state")
-    
-    def _tensor_product(self, matrices: List[np.ndarray]) -> np.ndarray:
-        """
-        Compute the tensor product of a list of matrices.
-        
-        Args:
-            matrices: List of matrices to tensor together
-            
-        Returns:
-            The resulting tensor product matrix
-        """
-        result = matrices[0]
-        for mat in matrices[1:]:
-            result = np.kron(result, mat)
-        return result
-    
-    def _get_gate_matrix(self, gate_name: str, parameters: Optional[List[float]] = None) -> np.ndarray:
-        """
-        Get the matrix representation of a gate.
-        
-        Args:
-            gate_name: Name of the gate
-            parameters: Optional parameters for parameterized gates
-            
-        Returns:
-            Matrix representation of the gate
-        """
-        gate_name = gate_name.lower()
-        
-        # Handle parameterized gates
-        if gate_name == 'rx' and parameters:
-            theta = parameters[0]
-            return np.array([
-                [np.cos(theta/2), -1j*np.sin(theta/2)],
-                [-1j*np.sin(theta/2), np.cos(theta/2)]
-            ], dtype=np.complex128)
-        
-        elif gate_name == 'ry' and parameters:
-            theta = parameters[0]
-            return np.array([
-                [np.cos(theta/2), -np.sin(theta/2)],
-                [np.sin(theta/2), np.cos(theta/2)]
-            ], dtype=np.complex128)
-        
-        elif gate_name == 'rz' and parameters:
-            theta = parameters[0]
-            return np.array([
-                [np.exp(-1j*theta/2), 0],
-                [0, np.exp(1j*theta/2)]
-            ], dtype=np.complex128)
-        
-        elif gate_name == 'u' and parameters and len(parameters) == 3:
-            # General unitary gate with 3 parameters (theta, phi, lambda)
-            theta, phi, lam = parameters
-            return np.array([
-                [np.cos(theta/2), -np.exp(1j*lam)*np.sin(theta/2)],
-                [np.exp(1j*phi)*np.sin(theta/2), np.exp(1j*(phi+lam))*np.cos(theta/2)]
-            ], dtype=np.complex128)
-        
-        # Handle standard gates
-        elif gate_name in self.SINGLE_QUBIT_GATES:
-            return self.SINGLE_QUBIT_GATES[gate_name]
-        
-        # Handle two-qubit gates
-        elif gate_name == 'cnot':
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]
-            ], dtype=np.complex128)
-        
-        elif gate_name == 'swap':
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 0, 1, 0],
-                [0, 1, 0, 0],
-                [0, 0, 0, 1]
-            ], dtype=np.complex128)
-        
-        elif gate_name == 'cz':
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 1, 0],
-                [0, 0, 0, -1]
-            ], dtype=np.complex128)
-        
-        else:
-            raise ValueError(f"Unknown gate: {gate_name}")
-    
-    def _apply_single_qubit_gate(self, gate_matrix: np.ndarray, target: int):
-        """
-        Apply a single-qubit gate to the specified target qubit.
-        
-        Args:
-            gate_matrix: 2x2 matrix representation of the gate
-            target: Index of the target qubit
-        """
-        # Create the full operator by tensoring with identities
-        operators = [np.eye(2, dtype=np.complex128) for _ in range(self.num_qubits)]
-        operators[target] = gate_matrix
-        
-        # Compute the full operator matrix
-        full_operator = self._tensor_product(operators)
-        
-        # Apply the operator to the state vector
-        self.state = np.dot(full_operator, self.state)
-    
-    def _apply_controlled_gate(self, gate_matrix: np.ndarray, controls: List[int], target: int):
-        """
-        Apply a controlled gate with potentially multiple control qubits.
-        
-        Args:
-            gate_matrix: 2x2 matrix representation of the gate
-            controls: List of control qubit indices
-            target: Index of the target qubit
-        """
-        n = self.num_qubits
-        full_operator = np.eye(2**n, dtype=np.complex128)
-        
-        # Iterate through all basis states
-        for i in range(2**n):
-            # Check if all control qubits are |1⟩
-            control_mask = 0
-            for control in controls:
-                control_mask |= (1 << (n - 1 - control))
-            
-            if (i & control_mask) == control_mask:
-                # All controls are |1⟩, apply the gate to the target
-                # Calculate the index after applying the gate
-                target_bit = (i >> (n - 1 - target)) & 1
-                new_target_bit = 1 - target_bit if gate_matrix[0, 1] != 0 else target_bit
+# Execute the circuit
+simulator = Aer.get_backend('qasm_simulator')
+result = execute(qc, simulator, shots=1000).result()
+counts = result.get_counts(qc)
+print("Counts:", counts)
+                </div>
                 
-                # For a general gate, we need to compute the full transformation
-                # This is a simplified approach that works for X, Z, etc.
-                if new_target_bit != target_bit:
-                    j = i ^ (1 << (n - 1 - target))
-                    full_operator[i, i] = 0
-                    full_operator[j, i] = 1
-                else:
-                    full_operator[i, i] = 1
+                <h2 style="margin-top: 20px;"><i class="fas fa-chart-bar"></i> Simulation Results</h2>
+                <div class="code-container" id="simulation-output">
+# Results will appear here
+Counts: {'000': 512, '001': 0, '010': 0, '011': 0, 
+         '100': 0, '101': 0, '110': 488, '111': 0}
+                </div>
+            </div>
+        </div>
         
-        # Apply the operator to the state vector
-        self.state = np.dot(full_operator, self.state)
-    
-    def _apply_multi_qubit_gate(self, gate_matrix: np.ndarray, targets: List[int]):
-        """
-        Apply a multi-qubit gate to the specified target qubits.
+        <div class="visualizations">
+            <div class="viz-container">
+                <h3>Probability Distribution</h3>
+                <div id="prob-chart"></div>
+            </div>
+            <div class="viz-container">
+                <h3>Gate Usage Statistics</h3>
+                <div id="gate-chart"></div>
+            </div>
+        </div>
         
-        Args:
-            gate_matrix: 2^m x 2^m matrix representation of the gate
-            targets: List of target qubit indices
-        """
-        n = self.num_qubits
-        m = len(targets)
+        <!-- Quantum Interference Pattern Visualization -->
+        <div class="panel">
+            <h2><i class="fas fa-wave-square"></i> Quantum Interference Patterns</h2>
+            <div class="interference-visualization" id="interference-canvas-container">
+                <canvas id="interference-canvas" width="600" height="400"></canvas>
+            </div>
+            <div class="interference-pattern-controls">
+                <button id="start-interference" class="interference-btn"><i class="fas fa-play"></i> Start Animation</button>
+                <button id="stop-interference" class="interference-btn"><i class="fas fa-stop"></i> Stop Animation</button>
+                <button id="reset-interference" class="interference-btn"><i class="fas fa-sync"></i> Reset</button>
+            </div>
+            <div class="interference-controls" style="margin-top: 15px;">
+                <h3><i class="fas fa-sliders-h"></i> Interference Parameters</h3>
+                <div class="slider-container">
+                    <label for="wave-frequency">Frequency:</label>
+                    <input type="range" id="wave-frequency" class="interference-slider" min="1" max="10" value="3" step="0.1">
+                    <span class="slider-value" id="frequency-value">3.0</span>
+                </div>
+                <div class="slider-container">
+                    <label for="wave-amplitude">Amplitude:</label>
+                    <input type="range" id="wave-amplitude" class="interference-slider" min="10" max="100" value="50">
+                    <span class="slider-value" id="amplitude-value">50</span>
+                </div>
+                <div class="slider-container">
+                    <label for="phase-difference">Phase Difference:</label>
+                    <input type="range" id="phase-difference" class="interference-slider" min="0" max="360" value="0">
+                    <span class="slider-value" id="phase-diff-value">0°</span>
+                </div>
+                <div class="slider-container">
+                    <label for="qubit-separation">Qubit Separation:</label>
+                    <input type="range" id="qubit-separation" class="interference-slider" min="50" max="300" value="150">
+                    <span class="slider-value" id="separation-value">150px</span>
+                </div>
+                <button id="apply-interference-params" class="interference-btn"><i class="fas fa-check"></i> Apply Parameters</button>
+            </div>
+        </div>
         
-        # For CNOT gate, handle it specially
-        if gate_matrix.shape == (4, 4) and m == 2:
-            # This is a 2-qubit gate like CNOT
-            control, target = targets[0], targets[1]
-            
-            # Create full system operator
-            full_operator = np.eye(2**n, dtype=np.complex128)
-            
-            # Apply CNOT logic: flip target if control is |1⟩
-            for i in range(2**n):
-                # Check if control qubit is |1⟩
-                if (i >> (n - 1 - control)) & 1:
-                    # Flip target qubit
-                    j = i ^ (1 << (n - 1 - target))
-                    # Swap rows i and j in the operator
-                    full_operator[i, i] = 0
-                    full_operator[j, i] = 1
-                    full_operator[i, j] = 0
-                    full_operator[j, j] = 0
-            
-            # Apply the operator to the state vector
-            self.state = np.dot(full_operator, self.state)
-        else:
-            # For other multi-qubit gates, use simplified approach
-            if targets == list(range(min(targets), min(targets) + m)):
-                # Targets are contiguous
-                operators = []
-                gate_applied = False
-                
-                for i in range(n):
-                    if i == targets[0] and not gate_applied:
-                        # Apply the multi-qubit gate here (simplified)
-                        operators.append(gate_matrix[:2, :2])  # Use only 2x2 part
-                        gate_applied = True
-                    elif i in targets[1:]:
-                        # Skip other target qubits
-                        continue
-                    else:
-                        operators.append(np.eye(2, dtype=np.complex128))
-                
-                if operators:
-                    full_operator = self._tensor_product(operators)
-                    self.state = np.dot(full_operator, self.state)
-            else:
-                raise NotImplementedError("Non-contiguous multi-qubit gates not yet implemented")
-    
-    def apply_gate(self, gate_name: str, targets: List[int], 
-                  controls: Optional[List[int]] = None, parameters: Optional[List[float]] = None):
-        """
-        Apply a quantum gate to the state vector.
         
-        Args:
-            gate_name: Name of the gate to apply
-            targets: List of target qubit indices
-            controls: Optional list of control qubit indices
-            parameters: Optional parameters for parameterized gates
-        """
-        gate_matrix = self._get_gate_matrix(gate_name, parameters)
+        <!-- Educational Content Section -->
+        <div id="educational-content" class="educational-content">
+            <h2 id="content-title">Quantum Computing</h2>
+            <div id="content-body">
+                <p>Select a topic from the menu to learn about quantum computing concepts, gates, and applications.</p>
+            </div>
+            <button class="close-btn" onclick="hideContent()">Close</button>
+        </div>
         
-        if gate_name.lower() == 'cnot':
-            # Handle CNOT specially - it needs 2 targets but no controls
-            if len(targets) != 2:
-                raise ValueError("CNOT gate requires exactly 2 targets")
-            control, target = targets[0], targets[1]
-            
-            # Apply CNOT directly without using multi-qubit gate method
-            n = self.num_qubits
-            new_state = self.state.copy()
-            
-            for i in range(2**n):
-                # Check if control qubit is |1⟩
-                if (i >> (n - 1 - control)) & 1:
-                    # Flip target qubit
-                    j = i ^ (1 << (n - 1 - target))
-                    new_state[j] = self.state[i]
-                    new_state[i] = 0
-            
-            self.state = new_state
-        elif controls:
-            # Controlled gate
-            if len(targets) != 1:
-                raise ValueError("Controlled gates must have exactly one target")
-            self._apply_controlled_gate(gate_matrix, controls, targets[0])
-        elif len(targets) == 1:
-            # Single-qubit gate
-            self._apply_single_qubit_gate(gate_matrix, targets[0])
-        else:
-            # Multi-qubit gate (not CNOT)
-            self._apply_multi_qubit_gate(gate_matrix, targets)
+        <h2 style="margin: 30px 0 20px; color: var(--accent);"><i class="fas fa-book-open"></i> Quantum Computing Fundamentals</h2>
+        <div class="articles">
+            <div class="article">
+                <h3>What is Quantum Computing?</h3>
+                <p>Quantum computing harnesses the phenomena of quantum mechanics to deliver a huge leap forward in computation to solve certain problems.</p>
+                <p>IBM plans to house a 1,000-qubit quantum computer by 2023. Now, a team in Australia has engineered a quantum processor that scales up using atoms in silicon.</p>
+                <a href="#" class="read-more" onclick="showContent('quantum-computing'); return false;">Read more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="article">
+                <h3>Quantum Supremacy Achieved</h3>
+                <p>Google's quantum computer, Sycamore, performed a calculation in 200 seconds that would take the world's fastest supercomputer 10,000 years.</p>
+                <p>This milestone demonstrates the potential of quantum computing to solve problems beyond the reach of classical computers.</p>
+                <a href="#" class="read-more" onclick="showContent('applications'); return false;">Read more <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="article">
+                <h3>Applications of Quantum Computing</h3>
+                <p>Quantum computers could revolutionize fields like cryptography, drug discovery, financial modeling, and climate change research by solving complex problems much faster than classical computers.</p>
+                <a href="#" class="read-more" onclick="showContent('applications'); return false;">Read more <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
         
-        logger.debug(f"Applied gate {gate_name} to targets {targets}")
-    
-    def measure(self, shots: int = 1) -> List[int]:
-        """
-        Perform measurement on all qubits.
-        
-        Args:
-            shots: Number of measurements to perform
-            
-        Returns:
-            List of measurement results (as integers representing basis states)
-        """
-        # Calculate probabilities
-        probabilities = np.abs(self.state)**2
-        probabilities /= np.sum(probabilities)  # Ensure normalization
-        
-        # Sample measurements
-        results = np.random.choice(range(len(self.state)), size=shots, p=probabilities)
-        
-        logger.debug(f"Performed {shots} measurements")
-        return results.tolist()
-    
-    def get_state(self) -> np.ndarray:
-        """Return the current state vector."""
-        return self.state
-    
-    def get_probabilities(self) -> np.ndarray:
-        """Return the measurement probabilities for each basis state."""
-        return np.abs(self.state)**2
+        <div class="footer">
+            <p>QuantumFlow: Quantum Computing Simulation Toolkit | Built with React.js, Three.js, D3.js, FastAPI, and Qiskit</p>
+            <p>©️ 2023 Quantum Labs. All rights reserved.</p>
+        </div>
+    </div>
 
-# Create FastAPI application
-app = FastAPI(title="Quantum Simulator Backend", version="1.0.0")
-
-# Add CORS middleware
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
-
-# Global simulator instance (in production, you'd want to manage this differently)
-simulator = None
-
-@app.post("/circuit", response_model=CircuitResponse)
-async def execute_circuit(circuit: CircuitRequest):
-    """
-    Execute a quantum circuit and return the results.
-    
-    Args:
-        circuit: Quantum circuit definition
-        
-    Returns:
-        Circuit execution results
-    """
-    global simulator
-    
-    try:
-        # Initialize or reset simulator
-        if simulator is None or simulator.num_qubits != circuit.num_qubits:
-            simulator = QuantumSimulator(circuit.num_qubits)
-            logger.info(f"Created new simulator with {circuit.num_qubits} qubits")
-        else:
-            simulator.reset()
-        
-        # Apply all operations
-        for op in circuit.operations:
-            simulator.apply_gate(
-                op.gate, 
-                op.targets, 
-                op.controls, 
-                op.parameters
-            )
-        
-        # Get results
-        state = simulator.get_state()
-        state_vector = [[float(amp.real), float(amp.imag)] for amp in state]
-        measurements = simulator.measure(circuit.shots) if circuit.shots > 0 else None
-        probabilities = simulator.get_probabilities().tolist()
-        
-        logger.info(f"Executed circuit with {len(circuit.operations)} operations")
-        
-        return CircuitResponse(
-            state_vector=state_vector,
-            measurements=measurements,
-            probabilities=probabilities
-        )
-    
-    except Exception as e:
-        logger.error(f"Error executing circuit: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
-
-@app.get("/state")
-async def get_state():
-    """Get the current state vector of the simulator."""
-    global simulator
-    if simulator is None:
-        raise HTTPException(status_code=400, detail="Simulator not initialized")
-    
-    state = simulator.get_state()
-    return {"state_vector": [[float(amp.real), float(amp.imag)] for amp in state]}
-
-@app.get("/measure")
-async def measure(shots: int = 1):
-    """Perform measurement on the current state."""
-    global simulator
-    if simulator is None:
-        raise HTTPException(status_code=400, detail="Simulator not initialized")
-    
-    return {"measurements": simulator.measure(shots)}
-
-@app.get("/probabilities")
-async def get_probabilities():
-    """Get the measurement probabilities for each basis state."""
-    global simulator
-    if simulator is None:
-        raise HTTPException(status_code=400, detail="Simulator not initialized")
-    
-    return {"probabilities": simulator.get_probabilities().tolist()}
-
-@app.post("/reset")
-async def reset_simulator(num_qubits: int):
-    """Reset the simulator with the specified number of qubits."""
-    global simulator
-    simulator = QuantumSimulator(num_qubits)
-    logger.info(f"Reset simulator with {num_qubits} qubits")
-    
-    return {"message": f"Simulator reset with {num_qubits} qubits"}
-
-@app.post("/interference")
-async def apply_interference_effect(interference_level: float, phase_shift: float):
-    """
-    Apply interference effects to the current quantum state.
-    
-    Args:
-        interference_level: Interference strength (0.0 to 1.0)
-        phase_shift: Phase shift in radians
-    """
-    global simulator
-    if simulator is None:
-        raise HTTPException(status_code=400, detail="Simulator not initialized")
-    
-    try:
-        # Get current state
-        current_state = simulator.get_state().copy()
-        
-        # Apply interference effects
-        for i in range(len(current_state)):
-            amplitude = current_state[i]
-            magnitude = abs(amplitude)
-            
-            if magnitude > 1e-10:  # Skip near-zero amplitudes
-                # Apply decoherence (amplitude reduction)
-                decoherence_factor = 1 - (1 - interference_level) * 0.3
-                new_magnitude = magnitude * decoherence_factor
-                
-                # Apply phase shift (alternating for different basis states)
-                current_phase = np.angle(amplitude)
-                new_phase = current_phase + phase_shift * (1 if i % 2 == 0 else -1)
-                
-                # Update amplitude
-                current_state[i] = new_magnitude * np.exp(1j * new_phase)
-        
-        # Normalize the state
-        norm = np.linalg.norm(current_state)
-        if norm > 0:
-            current_state /= norm
-        
-        # Update simulator state
-        simulator.state = current_state
-        
-        logger.info(f"Applied interference: level={interference_level:.3f}, phase={phase_shift:.3f}")
-        
-        # Return updated state and probabilities
-        state_vector = [[float(amp.real), float(amp.imag)] for amp in current_state]
-        probabilities = simulator.get_probabilities().tolist()
-        
-        return {
-            "state_vector": state_vector,
-            "probabilities": probabilities,
-            "message": f"Interference applied successfully"
-        }
-        
-    except Exception as e:
-        logger.error(f"Error applying interference: {str(e)}")
-        raise HTTPException(status_code=400, detail=str(e))
-
-if __name__ == "__main__":
-    # Run the server
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    <script src="script.js?v=4.0"></script>
+</body>
+</html>
